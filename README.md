@@ -1,60 +1,41 @@
 # 🎪 Eventeaze – Vendor-Based Event Discovery Platform
 
-A full-stack web application that connects event vendors with users based on interests and categories. Built using **React.js**, **Supabase**, and **PostgreSQL**, the app supports real-time event updates, secure authentication, and responsive design.
+**Eventeaze** is a full-stack web application that connects users with event vendors based on categories of interest. Designed for seamless event discovery and real-time interaction, the platform leverages **React.js**, **Supabase**, and **PostgreSQL** to deliver an efficient, scalable experience.
 
 ---
 
-## 📸 Preview
+## 🌟 Features
 
-*(Add screenshots here if available)*
-
----
-
-## 🚀 Features
-
-- 🔐 **User Authentication** – Login, Signup via Supabase Auth
-- 📅 **Event Listings** – Discover events by category
-- 🧩 **Vendor Profiles** – Separate pages for vendor information
-- 🔄 **Real-Time Sync** – Supabase-powered live database updates
-- 🔍 **Category Filtering** – Filter events based on interests
-- 📱 **Responsive UI** – Optimized for mobile and desktop
+- 🔐 **Secure Authentication** – Sign up and login via Supabase Auth
+- 🧭 **Category-Based Filtering** – Explore events tailored to user-selected categories
+- 🗂️ **Vendor Profiles** – View detailed information about event vendors
+- 🔄 **Real-Time Updates** – Supabase database integration with live sync
+- ⚡ **Optimized Performance** – Responsive design for all devices
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| React.js | Frontend UI |
-| Supabase | Backend + Auth + DB |
-| PostgreSQL | Cloud-hosted database |
-| Vite | React build tool |
-| CSS / Tailwind (if used) | Styling |
-| Git + GitHub | Version control |
+| Technology   | Usage                         |
+|--------------|-------------------------------|
+| React.js     | Frontend UI Components        |
+| Supabase     | Auth, Backend, Realtime DB    |
+| PostgreSQL   | Cloud-hosted Relational DB    |
+| Vite         | Frontend build tool           |
+| CSS / Vanilla CSS | Styling & Responsiveness |
+| Git + GitHub | Version Control               |
 
 ---
 
 ## ✍️ Contributor Note — Riddhi Saraf
 
-This is a solo fork of a collaborative academic project. I led the design and development of both frontend and backend components.
-
-**My contributions include:**
-- Developed modular React components for UI
-- Set up Supabase auth + database and linked real-time APIs
-- Implemented CRUD operations for event and vendor data
-- Integrated category filtering and search functionality
-- Improved performance by 30% through code optimization
+This version of Eventeaze reflects my independent work on the platform’s web application, developed for a client alongside a parallel mobile app.
+**Key Responsibilities:**
+- Built the full frontend with modular React components and state management
+- Integrated Supabase authentication and real-time event syncing
+- Created dynamic event/category/vendor flows with REST-style architecture
+- Designed responsive layouts and improved UX
+- Ensured production readiness via clean code practices and testing
 
 ---
 
-## 📦 Setup Instructions
-
-### Prerequisites:
-- Node.js (v16+)
-- Supabase project (with anon key and URL)
-
-### 📥 Clone the repository
-
-```bash
-git clone https://github.com/rizzi19/eventeaze.git
-cd eventeaze
