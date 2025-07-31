@@ -1,0 +1,57 @@
+.event-listings {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 2rem;
+    background: #fff;
+  }
+  
+  .event-card {
+    width: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: #fff;
+    transition: transform 0.2s ease;
+  }
+  
+  .event-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .event-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  .event-info {
+    padding: 1rem;
+  }
+  
+  .event-date {
+    color: #D53838;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+  
+  .event-location {
+    color: #555;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+  
+  .event-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
+  }
+  
+  .event-description {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  

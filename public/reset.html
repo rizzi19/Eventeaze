@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <title>Reset Password</title>
+    <link rel="icon" href="icon_eventeaze.png" type="image/png">
+    
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.4/+esm"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+      background-color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top-curve {
+      width: 100%;
+      height: 150px;
+      background-color: #d63031;
+      border-bottom-left-radius: 100% 50%;
+      border-bottom-right-radius: 100% 50%;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    form {
+      width: 90%;
+      max-width: 400px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .password-group {
+      position: relative;
+    }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .toggle-visibility {
+      position: absolute;
+      right: 10px;
+      top: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #d63031;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-curve"></div>
+    <h2>Change your password</h2>
+    <form id="reset-form">
+      <label for="new-password">New Password</label>
+      <div class="password-group">
+        <input type="password" id="new-password" required />
+        <i class="fas fa-eye-slash toggle-visibility" onclick="togglePassword('new-password', this)"></i>
+      </div>
+      <label for="confirm-password">Confirm Password</label>
+      <div class="password-group">
+        <input type="password" id="confirm-password" required />
+        <i class="fas fa-eye-slash toggle-visibility" onclick="togglePassword('confirm-password', this)"></i>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vyzcooyofvzycbhpaubk.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5emNvb3lvZnZ6eWNiaHBhdWJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzODYwMTcsImV4cCI6MjA2MDk2MjAxN30.AY98Nd2RU7ILp_i9-CRPSM3thue1JOVzaFUXYOb7fBk'; // Replace this with your actual anon/public key
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const getTokenFromURL = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('token');
+  };
+
+  const isValidPassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>\/?]).{8,}$/;
+    return regex.test(password);
+  };
+
+  const form = document.getElementById('reset-form');
+  const messageDiv = document.getElementById('message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const token = getTokenFromURL();
+    const newPassword = document.getElementById('new-password').value.trim();
+    const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+    messageDiv.textContent = '';
+    messageDiv.style.color = 'red';
+
+    if (!token) {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Reset token missing in given link. Invalid Email';
+      return;
+    }
+
+    if (!isValidPassword(newPassword)) {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent ='Password must be at least 8 characters long and include uppercase, lowercase, digit, and special character.';
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Passwords do not match.';
+      return;
+    }
+
+    // Step 1: Look up user by token
+    const { data: user, error: fetchError } = await supabase
+      .from('users')
+      .select('id, email')
+      .eq('reset_password_token', token)
+      .maybeSingle();
+
+    if (fetchError || !user) {
+      console.error(fetchError);
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Invalid or expired reset token.';
+      return;
+    }
+
+    // Step 2: Update password
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ password: newPassword }) 
+      .eq('id', user.id);
+
+    if (updateError) {
+      console.error(updateError);
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Failed to update password.';
+    } else {
+      form.style.display = 'none'; 
+      document.querySelector('h2').style.display = 'none';
+      const successHTML = `
+        <div style="text-align: center; margin-top: 30px;">
+          <img src="checked.png" alt="Success" style="width: 80px; height: 80px;"/>
+          <div style="color: #000000; font-size: 1.2rem; font-weight: 600; margin-top: 15px;">
+            Password successfully updated !!
+          </div>
+        </div>
+      `;
+      messageDiv.innerHTML = successHTML;
+    }
+    });    
+  
+    window.togglePassword = (id, icon) => {
+    const input = document.getElementById(id);
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    } else {
+      input.type = 'password';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    }
+  };
+
+  </script>
+</body>
+</html>

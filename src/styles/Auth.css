@@ -1,0 +1,77 @@
+/* Auth.css */
+.auth-box input,
+.auth-box button {
+  font-family: 'Product Sans', sans-serif;
+}
+.auth-box h2,
+.auth-box p,
+.auth-box label {
+  font-family: 'Product Sans', sans-serif;
+}
+
+.auth-container {
+    background: url('../assets/backgrounds/login-bg.png') no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .auth-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    margin-top: -40px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .auth-box h2 {
+    color: #D53838;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .auth-box label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-size: 14px;
+  }
+  
+  .auth-box input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px #ddd;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .auth-box button {
+    background-color: #D53838;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .auth-box a:hover {
+    text-decoration: underline;
+  }
+  
+  .logo-bottom {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  

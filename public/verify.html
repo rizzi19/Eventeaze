@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verify Email</title>
+  <link rel="icon" href="icon_eventeaze.png" type="image/png">
+  
+  <style>
+    body {
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .top-curve {
+    width: 100%;
+    height: 150px;
+    background-color: #d63031;
+    border-bottom-left-radius: 100% 50%;
+    border-bottom-right-radius: 100% 50%;
+    margin-bottom: 30px;
+    }
+
+    .result-container {
+    text-align: center;
+    padding: 40px 30px ;
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 400px;
+    min-height: 200px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    }
+
+    .message {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    }
+
+    .success-icon {
+    filter: drop-shadow(0 0 5px #2ecc71);
+    }
+
+    .error-icon {
+    filter: drop-shadow(0 0 5px #e74c3c);
+    }
+
+    .loading-icon {
+    animation: spin 2s linear infinite;
+    filter: drop-shadow(0 0 5px #3498db);
+    }
+
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+
+
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.4/+esm"></script>
+</head>
+<body>
+    <div class="top-curve"></div>
+  <div class="result-container" id="result">
+    <img class="icon spin" src="sand-clock.png" alt="Loading">    <div class="message">Verifying your email...</div>
+
+  </div>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vyzcooyofvzycbhpaubk.supabase.co';  
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5emNvb3lvZnZ6eWNiaHBhdWJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzODYwMTcsImV4cCI6MjA2MDk2MjAxN30.AY98Nd2RU7ILp_i9-CRPSM3thue1JOVzaFUXYOb7fBk';  
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const resultContainer = document.getElementById('result');
+
+    const getTokenFromURL = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('token');
+    };
+
+    const showResult = (status, message) => {
+      let iconSrc = '';
+      let extraClass = '';
+
+      if (status === 'success') {
+        iconSrc = 'checked.png';
+      } else if (status === 'error') {
+        iconSrc = 'warning.png';
+      } else {
+        iconSrc = 'sand-clock.png';
+        extraClass = 'spin';
+      }
+
+      resultContainer.innerHTML = `
+        <img class="icon ${extraClass}" src="${iconSrc}" alt="${status}">
+        <div class="message">${message}</div>
+      `;
+    };
+
+    const verifyEmail = async () => {
+      const token = getTokenFromURL();
+
+      if (!token) {
+        showResult('error', 'Missing or invalid token.');
+        return;
+      }
+
+      const { data: user, error } = await supabase
+        .from('users')
+        .select('id, email')
+        .eq('verify_email_token', token)
+        .maybeSingle();
+
+      if (error || !user) {
+        console.error(error);
+        showResult('error', 'Unable to verify email. Invalid or expired token.');
+        return;
+      }
+
+      // Optionally update is_verified flag or clear the token
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({
+           email_verified_or_not: 'Email verified'
+        })
+        .eq('id', user.id);
+
+      if (updateError) {
+        console.error(updateError);
+        showResult('error', 'Something went wrong while verifying your email.');
+        return;
+      }
+
+      showResult('success', 'Your email has been successfully verified');
+    };
+
+    verifyEmail();
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+.location-box {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  
+  .location-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+  }
+  
+  .location-selector {
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }

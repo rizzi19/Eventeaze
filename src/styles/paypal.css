@@ -1,0 +1,75 @@
+.full-image-preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.preloader-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.paypal-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    background-color: white;
+    min-height: 300px;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .paypal-button-container {
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+  }
+  
+  .paypal-bg {
+    background: url('../assets/event3.png') no-repeat center center fixed;   
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .paypal-text p {
+    text-align: center;
+    font-weight: 600;             
+    font-size: 18px;              
+    line-height: 1.6;             
+    margin-bottom: 32px;          
+    color: #333;                 
+    max-width: 600px;             
+    margin-left: auto;            
+    margin-right: auto;
+    padding: 0 16px;              
+  }
+
+  /* Responsive styles */
+  @media (max-width: 480px) {
+    .paypal-button-wrapper {
+      width: 100%;
+      min-height: 350px;
+    }
+  
+    .paypal-button-container {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+  
